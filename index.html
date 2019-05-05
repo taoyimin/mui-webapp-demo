@@ -5,12 +5,14 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
-		<script src="js/mui.min.js"></script>
-		<script type="text/javascript" src="js/vue.min.js" ></script>
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
 		<link href="css/mui.min.css" rel="stylesheet" />
-		<script type="text/javascript" charset="utf-8">
-			mui.init();
-		</script>
+		<style>
+			* {
+				touch-action: pan-y;
+			}
+		</style>
 	</head>
 
 	<body id='html_body'>
@@ -33,9 +35,7 @@
 		</nav>
 	</body>
 	<script>
-		var subpages = ['views/main/main.html', 'views/message/message_list.html', 'views/mine/mine.html'];
-		//mui初始化
-		mui.init();
+		var subpages = ['views/main/main.html', 'views/message/message.html', 'views/mine/mine.html'];
 
 		var subpage_style = {
 			top: '44px',
@@ -43,19 +43,20 @@
 		};
 
 		var aniShow = {};
-		
+
 		var vm = new Vue({
-				el: '#bottom_tab',
-				data: {
-					currentIndex: 0,
-					subpages: subpages
-				}
+			el: '#bottom_tab',
+			data: {
+				subpages: subpages
+			}
 		});
+		//mui初始化
+		mui.init();
 
 		//创建子页面，首个选项卡页面显示，其它均隐藏；
 		mui.plusReady(function() {
 			var self = plus.webview.currentWebview();
-			for(var i = 0; i < subpages.length; i++) {
+			for(var i = 0; i < 4; i++) {
 				var temp = {};
 				var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
 				if(i > 0) {
@@ -65,26 +66,11 @@
 					mui.extend(aniShow, temp);
 				}
 				self.append(sub);
-			};
+			}
 			//改变状态栏颜色
 			plus.navigator.setStatusBarStyle("UIStatusBarStyleBlackOpaque");
-			plus.navigator.setStatusBarBackground('#2cc971'); //设置状态栏的颜色
+			plus.navigator.setStatusBarBackground('#2cc971');
 		});
-
-		var first = null;
-		mui.back = function() {
-			if(!first) {
-				first = new Date().getTime();
-				mui.toast('再按一次退出系统!');
-				setTimeout(function() {
-					first = null;
-				}, 2000);
-			} else {
-				if(new Date().getTime() - first < 2000) {
-					plus.runtime.quit();
-				}
-			}
-		};
 		//当前激活选项
 		var activeTab = subpages[0];
 		var title = document.getElementById("title");
@@ -107,27 +93,26 @@
 				mui.extend(aniShow, temp);
 				plus.webview.show(targetTab, "fade-in", 300);
 			}
-
-			mui.fire(plus.webview.getWebviewById(activeTab), "unSelected", null);
-
 			//隐藏当前;
 			plus.webview.hide(activeTab);
 			//更改当前活跃的选项卡
 			activeTab = targetTab;
-			mui.fire(plus.webview.getWebviewById(activeTab), "selected", null);
 		});
-		//自定义事件，模拟点击“首页选项卡”
-		document.addEventListener('gohome', function() {
-			var defaultTab = document.getElementById("defaultTab");
-			//模拟首页点击
-			mui.trigger(defaultTab, 'tap');
-			//切换选项卡高亮
-			var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-			if(defaultTab !== current) {
-				current.classList.remove('mui-active');
-				defaultTab.classList.add('mui-active');
+
+		var first = null;
+		mui.back = function() {
+			if(!first) {
+				first = new Date().getTime();
+				mui.toast('再按一次退出系统!');
+				setTimeout(function() {
+					first = null;
+				}, 2000);
+			} else {
+				if(new Date().getTime() - first < 2000) {
+					plus.runtime.quit();
+				}
 			}
-		});
+		};
 	</script>
 
 </html>

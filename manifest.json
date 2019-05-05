@@ -133,8 +133,8 @@
 					"views/main/main.html"
 				],
 				"refer": [
-					"views/message/message_list.html",
-					"views/mine/mine.html"
+					"views/mine/mine.html",
+					"views/message/message.html"
 				],
 				"priority": 0
 			}
