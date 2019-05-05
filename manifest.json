@@ -125,5 +125,29 @@
 				}
 			}
 		}
+	},
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [
+					"views/main/main.html"
+				],
+				"refer": [
+					"views/message/message_list.html",
+					"views/mine/mine.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"js/mui.min.js",
+				"views/application/application.html",
+				"fonts/mui.ttf",
+				"css/mui.min.css",
+				"js/mui.js",
+				"css/mui.css"
+			]
+		}
 	}
 }
